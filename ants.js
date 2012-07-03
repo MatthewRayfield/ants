@@ -9,6 +9,8 @@ var can;
 var ctx;
 var dirt = [];
 var ants = [];
+var fpsBox;
+var frames = 0;
 
 var realWidth = width * zoom;
 var realHeight = height * zoom;
@@ -32,11 +34,23 @@ function init() {
 
     document.body.appendChild(can);
 
+    fpsBox = document.createElement('div');
+
+    document.body.appendChild(fpsBox);
+
     ctx = can.getContext('2d');
 
     generateDirt();
     initAnts();
     loop();
+
+    showFps();
+}
+
+function showFps() {
+    fpsBox.innerHTML = frames;
+    frames = 0;
+    setTimeout(showFps, 1000);
 }
 
 function ant(){
@@ -107,6 +121,7 @@ function antLoop() {
 function loop() {
     render();
     antLoop();
+    frames ++;
     setTimeout(loop, 0);
 }
 
