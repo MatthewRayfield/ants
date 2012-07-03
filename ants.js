@@ -78,7 +78,7 @@ function antLoop() {
         y = ants[i].y;
 
         // Check if dirt is not under ant
-        if (!dirt[x][y+1]) {
+        if (!dirt[x] || !dirt[x][y+1]) {
             y ++;
         }
         else {
@@ -87,8 +87,10 @@ function antLoop() {
 
             actions[r]();
         }
-        
-        dirt[x][y] = 0;
+
+        if (x > 0 && x < width) { 
+            dirt[x][y] = 0;
+        }
 
         ants[i].x = x;
         ants[i].y = y;
