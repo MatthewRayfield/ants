@@ -83,7 +83,8 @@ function antLoop() {
         }
         else {
             al = actions.length;
-            r = Math.floor(Math.random()*al);
+            // Cause more left to right
+            r = Math.floor(Math.random()*al*0.85);
 
             actions[r]();
         }
