@@ -39,14 +39,34 @@ function init() {
     loop();
 }
 
+function ant(){
+    this.x = Math.floor(Math.random()*width);
+    this.y = 0;
+    // this.speed = 1;
+    var thisAnt = this;
+    
+    this.actions = [
+        function left() {
+            thisAnt.x --;
+        },
+        function right() {
+            thisAnt.x ++;
+        },
+        function up() {
+            thisAnt.y --;
+        },
+        function down() {
+            thisAnt.y ++;
+        }
+    ];
+
+}
+
 function initAnts() {
     var i;
 
     for (i = 0; i < antCount; i++) {
-        ants[i] = {
-            'x': Math.floor(Math.random()*width),
-            'y': 0
-        };
+        ants[i] = new ant();
     }
 }
 
@@ -57,45 +77,30 @@ function antLoop() {
     var y;
     var al;
     var r;
-
-    var actions = [
-        function left() {
-            x --;
-        },
-        function right() {
-            x ++;
-        },
-        function up() {
-            y --;
-        },
-        function down() {
-            y ++;
-        }
-    ];
+    var a;
 
     for (i = 0; i < l; i++) {
-        x = ants[i].x;
-        y = ants[i].y;
+        a = ants[i];
+        
 
         // Check if dirt is not under ant
-        if (!dirt[x] || !dirt[x][y+1]) {
-            y ++;
+        if (!dirt[a.x] || !dirt[a.x][a.y+1]) {
+            a.y ++;
         }
         else {
-            al = actions.length;
-            r = Math.floor(Math.random()*al);
+            al = a.actions.length;
+            // Cause more left to right
+            r = Math.floor(Math.random()*al*0.9);
+            a.actions[r]();
 
-            actions[r]();
+        }
+        // Creates white trail
+        if (a.x > 0 && a.x < width) {
+            dirt[a.x][a.y] = 0;
         }
 
-        if (x > 0 && x < width) { 
-            dirt[x][y] = 0;
-        }
 
-        ants[i].x = x;
-        ants[i].y = y;
-
-        drawPixel(x, y, 'red');
+        drawPixel(a.x, a.y, 'red');
     }
 }
 
